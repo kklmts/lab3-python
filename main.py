@@ -7,21 +7,15 @@ institutions = {
     "Медичний": ["технікум", 400]
 }
 
-
 def print_dict(data):
-    # Виведення на екран усіх значень словника
     print("\n--- Вміст словника ---")
     if not data:
         print("Словник порожній.")
     for key, value in data.items():
         print(f"Заклад: {key} - Тип: {value[0]}, Учнів: {value[1]}")
 
-
 def add_record(data):
-    # Додавання нового запису до словника
     print("\n--- Додавання запису ---")
-
-    # Перевірка назви
     while True:
         key = input("Введіть назву навчального закладу: ").strip()
         if not key:
@@ -32,33 +26,28 @@ def add_record(data):
             continue
         break
 
-        # Перевірка типу закладу
     valid_types = ["школа", "технікум", "училище"]
     while True:
         type_inst = input("Введіть тип закладу (школа, технікум або училище): ").strip().lower()
         if type_inst in valid_types:
             break
         else:
-            print(
-                "Помилка: введено неправильний тип закладу. Дозволено лише: школа, технікум або училище. Спробуйте ще раз.")
+            print("Помилка: введено неправильний тип закладу. Дозволено лише: школа, технікум або училище.")
 
-    # Перевірка кількості учнів
     while True:
         try:
             students_count = int(input("Введіть кількість учнів: "))
             if students_count <= 0:
-                print("Помилка: кількість учнів має бути більше нуля. Спробуйте ще раз.")
+                print("Помилка: кількість учнів має бути більше нуля.")
                 continue
             break
         except ValueError:
-            print("Помилка вводу: кількість учнів має бути цілим додатним числом! Спробуйте ще раз.")
+            print("Помилка вводу: кількість учнів має бути цілим додатним числом!")
 
     data[key] = [type_inst, students_count]
     print(f"\nЗапис '{key}' успішно додано!")
 
-
 def delete_record(data):
-    # Видалення запису зі словника
     print("\n--- Видалення запису ---")
     while True:
         key = input("Введіть назву закладу для видалення (або '0' для відміни): ").strip()
@@ -72,58 +61,56 @@ def delete_record(data):
         except KeyError:
             print("Помилка: закладу з такою назвою не знайдено в словнику! Спробуйте ще раз.")
 
-
 def print_sorted(data):
-    # Перегляд вмісту словника за відсортованими ключами
     print("\n--- Відсортований словник (за назвами закладів) ---")
     if not data:
         print("Словник порожній.")
         return
-
     for key in sorted(data.keys()):
         print(f"Заклад: {key} - Тип: {data[key][0]}, Учнів: {data[key][1]}")
 
-
 def solve_task(data):
-    # Визначає загальну кількість учнів шкіл
     print("\n--- Загальна кількість учнів шкіл ---")
     total_school_students = 0
     for key, value in data.items():
         if value[0].lower() == "школа":
             total_school_students += value[1]
-
     print(f"Всього учнів у школах: {total_school_students}")
 
-
 def edit_record(data):
-    # Редагування кількості учнів у закладі (Функція Олі)
     print("\n--- Редагування запису ---")
     key = input("Введіть назву закладу для редагування (або '0' для відміни): ").strip()
-
     if key == '0':
         print("Редагування скасовано.")
         return
-
     if key not in data:
         print(f"Помилка: заклад '{key}' не знайдено в словнику!")
         return
-
     while True:
         try:
             new_count = int(input(f"Введіть нову кількість учнів для закладу '{key}': "))
             if new_count <= 0:
-                print("Помилка: кількість учнів має бути більше нуля. Спробуйте ще раз.")
+                print("Помилка: кількість учнів має бути більше нуля.")
                 continue
-
             data[key][1] = new_count
             print(f"Дані успішно оновлено! Тепер у закладі '{key}' {new_count} учнів.")
             break
         except ValueError:
             print("Помилка вводу: кількість учнів має бути цілим додатним числом!")
 
+def find_min_max(data):
+    print("\n--- Заклади з найбільшою та найменшою кількістю учнів ---")
+    if not data:
+        print("Словник порожній.")
+        return
+
+    min_key = min(data, key=lambda k: data[k][1])
+    max_key = max(data, key=lambda k: data[k][1])
+
+    print(f"Найменше учнів: {min_key} ({data[min_key][1]} учнів)")
+    print(f"Найбільше учнів: {max_key} ({data[max_key][1]} учнів)")
 
 def main():
-    # Меню користувача
     while True:
         print("\nГОЛОВНЕ МЕНЮ")
         print("1. Вивести всі значення словника")
@@ -131,10 +118,11 @@ def main():
         print("3. Видалити запис")
         print("4. Переглянути відсортований словник")
         print("5. Розрахувати загальну кількість учнів шкіл")
-        print("6. Вийти з програми")
-        print("7. Відредагувати дані існуючого закладу")
+        print("6. Відредагувати дані існуючого закладу")
+        print("7. Знайти заклади з найбільшою/найменшою кількістю учнів")
+        print("8. Вийти з програми")
 
-        choice = input("Оберіть дію (1-7): ").strip()
+        choice = input("Оберіть дію (1-8): ").strip()
 
         if choice == '1':
             print_dict(institutions)
@@ -146,14 +134,15 @@ def main():
             print_sorted(institutions)
         elif choice == '5':
             solve_task(institutions)
-        elif choice == '7':
-            edit_record(institutions)
         elif choice == '6':
+            edit_record(institutions)
+        elif choice == '7':
+            find_min_max(institutions)
+        elif choice == '8':
             print("Роботу завершено!")
             break
         else:
-            print("\nНекоректний вибір. Будь ласка, введіть число від 1 до 7.")
-
+            print("\nНекоректний вибір. Будь ласка, введіть число від 1 до 8.")
 
 if __name__ == "__main__":
     main()
