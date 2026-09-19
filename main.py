@@ -30,9 +30,9 @@ def add_record(data):
         if key in data:
             print("Помилка: такий заклад вже існує в базі! Введіть іншу назву.")
             continue
-        break  # Якщо все добре, виходимо з циклу перевірки назви
+        break
 
-    # Перевірка типу закладу
+        # Перевірка типу закладу
     valid_types = ["школа", "технікум", "училище"]
     while True:
         type_inst = input("Введіть тип закладу (школа, технікум або училище): ").strip().lower()
@@ -49,11 +49,10 @@ def add_record(data):
             if students_count <= 0:
                 print("Помилка: кількість учнів має бути більше нуля. Спробуйте ще раз.")
                 continue
-            break  # Якщо введено коректне число, виходимо з циклу
+            break
         except ValueError:
             print("Помилка вводу: кількість учнів має бути цілим додатним числом! Спробуйте ще раз.")
 
-    # Додавання до словника після успішного проходження всіх перевірок
     data[key] = [type_inst, students_count]
     print(f"\nЗапис '{key}' успішно додано!")
 
@@ -96,6 +95,33 @@ def solve_task(data):
     print(f"Всього учнів у школах: {total_school_students}")
 
 
+def edit_record(data):
+    # Редагування кількості учнів у закладі (Функція Олі)
+    print("\n--- Редагування запису ---")
+    key = input("Введіть назву закладу для редагування (або '0' для відміни): ").strip()
+
+    if key == '0':
+        print("Редагування скасовано.")
+        return
+
+    if key not in data:
+        print(f"Помилка: заклад '{key}' не знайдено в словнику!")
+        return
+
+    while True:
+        try:
+            new_count = int(input(f"Введіть нову кількість учнів для закладу '{key}': "))
+            if new_count <= 0:
+                print("Помилка: кількість учнів має бути більше нуля. Спробуйте ще раз.")
+                continue
+
+            data[key][1] = new_count
+            print(f"Дані успішно оновлено! Тепер у закладі '{key}' {new_count} учнів.")
+            break
+        except ValueError:
+            print("Помилка вводу: кількість учнів має бути цілим додатним числом!")
+
+
 def main():
     # Меню користувача
     while True:
@@ -106,8 +132,9 @@ def main():
         print("4. Переглянути відсортований словник")
         print("5. Розрахувати загальну кількість учнів шкіл")
         print("6. Вийти з програми")
+        print("7. Відредагувати дані існуючого закладу")
 
-        choice = input("Оберіть дію (1-6): ").strip()
+        choice = input("Оберіть дію (1-7): ").strip()
 
         if choice == '1':
             print_dict(institutions)
@@ -119,11 +146,13 @@ def main():
             print_sorted(institutions)
         elif choice == '5':
             solve_task(institutions)
+        elif choice == '7':
+            edit_record(institutions)
         elif choice == '6':
             print("Роботу завершено!")
             break
         else:
-            print("\nНекоректний вибір. Будь ласка, введіть число від 1 до 6.")
+            print("\nНекоректний вибір. Будь ласка, введіть число від 1 до 7.")
 
 
 if __name__ == "__main__":
