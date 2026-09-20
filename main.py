@@ -110,6 +110,19 @@ def find_min_max(data):
     print(f"Найменше учнів: {min_key} ({data[min_key][1]} учнів)")
     print(f"Найбільше учнів: {max_key} ({data[max_key][1]} учнів)")
 
+def filter_by_type(data):
+    print("\n--- Фільтрація закладів за типом ---")
+    req_type = input("Введіть тип для пошуку (школа, технікум або училище): ").strip().lower()
+
+    found = False
+    for key, value in data.items():
+        if value[0].lower() == req_type:
+            print(f"Заклад: {key} - Учнів: {value[1]}")
+            found = True
+
+    if not found:
+        print(f"Закладів типу '{req_type}' не знайдено.")
+
 def main():
     while True:
         print("\nГОЛОВНЕ МЕНЮ")
@@ -120,9 +133,10 @@ def main():
         print("5. Розрахувати загальну кількість учнів шкіл")
         print("6. Відредагувати дані існуючого закладу")
         print("7. Знайти заклади з найбільшою/найменшою кількістю учнів")
-        print("8. Вийти з програми")
+        print("8. Фільтрація закладів за типом")
+        print("9. Вийти з програми")
 
-        choice = input("Оберіть дію (1-8): ").strip()
+        choice = input("Оберіть дію (1-9): ").strip()
 
         if choice == '1':
             print_dict(institutions)
@@ -139,10 +153,12 @@ def main():
         elif choice == '7':
             find_min_max(institutions)
         elif choice == '8':
+            filter_by_type(institutions)
+        elif choice == '9':
             print("Роботу завершено!")
             break
         else:
-            print("\nНекоректний вибір. Будь ласка, введіть число від 1 до 8.")
+            print("\nНекоректний вибір. Будь ласка, введіть число від 1 до 9.")
 
 if __name__ == "__main__":
     main()
